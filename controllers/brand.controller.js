@@ -18,7 +18,7 @@ const createBrand = (req,res) =>{
         });      
 }
 
-/** GET */
+/** GET  ALL*/
 const findAll = (req,res)=>{
     _brand.find()
         .then((data)=>{
@@ -35,7 +35,19 @@ const findAll = (req,res)=>{
             res.json({msg:"Error"});
         })
 }
-
+/** GET ONE */
+const findId = (req,res) =>{
+    const {id} = req.params;
+    _brand.findOne({_id:id})
+        .then((data)=>{
+                res.status(status.OK);
+                res.json({msg:"ÉXITO!",data:data});
+        })
+        .catch((err)=>{
+            res.status(status.BAD_REQUEST);
+                res.json({msg:"Error!",data:err});
+        });
+}
 /** DELETE */
 const deleteById = (req,res) =>{
     const {id} = req.params;
@@ -74,6 +86,7 @@ module.exports = (Brand) =>{
         createBrand,
         findAll,
         deleteById,
-        updateBrand
+        updateBrand,
+        findId
     }); 
 }

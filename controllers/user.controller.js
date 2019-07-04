@@ -36,6 +36,19 @@ const findAll = (req,res) =>{
                 res.json({msg:"Error!"});
         });
 }
+
+const findId = (req,res) =>{
+    const {id} = req.params;
+    _user.findOne({_id:id})
+        .then((data)=>{
+                res.status(status.OK);
+                res.json({msg:"ÉXITO!",data:data});
+        })
+        .catch((err)=>{
+            res.status(status.BAD_REQUEST);
+                res.json({msg:"Error!",data:err});
+        });
+}
 /** DELETE */
 
 const deleteById = (req,res) =>{
@@ -70,6 +83,7 @@ const updateUser = (req,res) =>{
         });        
 }
 
+//const login;
 /** Exporta una funcion que recibe el modelo */
 module.exports = (User) =>{ 
     _user = User; //Asigna el modelo a _user
@@ -77,6 +91,7 @@ module.exports = (User) =>{
         createUser,
         findAll,
         deleteById,
-        updateUser
+        updateUser,
+        findId
     }); 
 }

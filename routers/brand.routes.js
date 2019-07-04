@@ -12,6 +12,9 @@ module.exports = (wagner) => {
         router.get('/',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
                 brandCtrl.findAll(req,res);
         });
+        router.get('/brand/:id',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
+                brandCtrl.findId(req,res);
+        });
 
         router.delete('/:id',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
                 brandCtrl.deleteById(req,res);

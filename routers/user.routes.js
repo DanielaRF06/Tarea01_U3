@@ -9,8 +9,12 @@ module.exports = (wagner) => {
         router.post('/',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
                 userCtrl.createUser(req,res);
         });
+        
         router.get('/',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
                 userCtrl.findAll(req,res);
+        });
+        router.get('/usr/:id',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
+                userCtrl.findId(req,res);
         });
                 // recibe un path params
         router.delete('/:id',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
