@@ -1,0 +1,25 @@
+                                //metodo Router sirve para
+const  router = require('express').Router(); 
+
+module.exports = (wagner) => {
+
+        const userCtrl = wagner.invoke((User) => //invoca parametro 
+                                require('../controllers/user.controller')(User));
+
+        router.post('/',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
+                userCtrl.createUser(req,res);
+        });
+        router.get('/',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
+                userCtrl.findAll(req,res);
+        });
+                // recibe un path params
+        router.delete('/:id',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
+                userCtrl.deleteById(req,res);
+        });
+        router.put('/:id',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
+                userCtrl.updateUser(req,res);
+        });
+        
+
+        return router;
+}
