@@ -11,10 +11,11 @@ module.exports = (wagner) => {
 
     const User= require ('./user.model'); // devuelve el modelo , contendra todos los objetos que se necesiten
     const Brand= require ('./brand.model');
-    
+    const Product= require ('./product.model');
     const models ={
         User,
-        Brand
+        Brand,
+        Product
     }
     //underscore sirve para recorrer el objeto models que recibe los modelos de User
     //v = es el contenido de la variable

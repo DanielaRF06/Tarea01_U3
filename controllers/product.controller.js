@@ -2,29 +2,29 @@ const http = require('http');
 const path = require('path');
 const status = require('http-status');
 
-let _brand;
-/**  POST */
-const createBrand = (req,res) =>{
-    const brand =req.body;
+//var brandController = require('./brand.controller');
+let _product;
 
-    _brand.create(brand)
+const createProduct = (req,res)=>{
+    const product = req.body;
+
+    _product.create(product)
         .then((data)=>{
             res.status(status.OK);
-            res.json({msg:"Marca creada exitosamente",data:data});
+            res.json({msg:"Producto creada exitosamente",data:data});
         })
-        .catch((err)=>{ 
+        .catch((err)=>{
             res.status(status.BAD_REQUEST);
             res.json({msg:"Error!",data:err});
-        });      
+        })
 }
 
-/** GET  ALL*/
 const findAll = (req,res)=>{
-    _brand.find()
+    _product.find()
         .then((data)=>{
             if(data.length == 0){
                 res.status(status.NO_CONTENT);
-                res.json({msg:"No existen registro de marcas"});
+                res.json({msg:"No existen registro de producto"});
             }else{
                 res.status(status.OK);
                 res.json({msg:"Exito",data:data});
@@ -35,10 +35,10 @@ const findAll = (req,res)=>{
             res.json({msg:"Error"});
         })
 }
-/** GET ONE */
+
 const findId = (req,res) =>{
     const {id} = req.params;
-    _brand.findOne({_id:id})
+    _product.findOne({_id:id})
         .then((data)=>{
                 res.status(status.OK);
                 res.json({msg:"ÉXITO!",data:data});
@@ -48,14 +48,14 @@ const findId = (req,res) =>{
                 res.json({msg:"Error!",data:err});
         });
 }
-/** DELETE */
+
 const deleteById = (req,res) =>{
     const {id} = req.params;
     const params = {
         _id:id
     }
 
-    _brand.findByIdAndRemove(params)
+    _product.findByIdAndRemove(params)
         .then((data)=>{
             res.status(status.OK);
             res.json({msg:"Exitoso",data:data});
@@ -66,7 +66,7 @@ const deleteById = (req,res) =>{
         });
 }
 
-const updateBrand = (req,res) =>{
+const updateProduct = (req,res) =>{
     const{id} = req.params;
     
     _brand.update({_id:id},{$set:req.body})
@@ -78,15 +78,14 @@ const updateBrand = (req,res) =>{
             res.status({msg:"Error",data:err});
         });
 }
-
-/** Exporta una funcion que recibe el modelo */
-module.exports = (Brand) =>{ 
-    _brand = Brand; //Asigna el modelo a _user
-    return ({//retorna metodos
-        createBrand,
+module.exports = (Product) =>{
+    _product = Product;
+    return ({
+        createProduct,
         findAll,
         deleteById,
-        updateBrand,
+        updateProduct,
         findId
-    }); 
+    })
 }
+

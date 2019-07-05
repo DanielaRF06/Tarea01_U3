@@ -16,6 +16,9 @@ module.exports = (wagner) => {
         router.get('/usr/:id',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
                 userCtrl.findId(req,res);
         });
+        router.get('/login/',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
+                userCtrl.login(req,res);
+        });
                 // recibe un path params
         router.delete('/:id',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
                 userCtrl.deleteById(req,res);

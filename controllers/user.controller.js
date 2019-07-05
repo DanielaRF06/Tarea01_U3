@@ -83,7 +83,23 @@ const updateUser = (req,res) =>{
         });        
 }
 
-//const login;
+const login = (req,res) =>{
+    
+    _user.find({email:req.body.email,password:req.body.password,})
+        .then((data)=>{
+            if(data.length == 0){
+                res.status(status.NO_CONTENT);
+                re.json({msg:"Acceso denegado"});
+            }else{
+                res.status(status.OK);
+                res.json({msg:"Puedes acceder",data:data});
+            }
+        })
+        .catch((err)=>{
+                res.status(status.BAD_REQUEST);
+                res.json({msg:"Error login!",err:err});
+        });
+}
 /** Exporta una funcion que recibe el modelo */
 module.exports = (User) =>{ 
     _user = User; //Asigna el modelo a _user
@@ -92,6 +108,7 @@ module.exports = (User) =>{
         findAll,
         deleteById,
         updateUser,
-        findId
+        findId,
+        login
     }); 
 }

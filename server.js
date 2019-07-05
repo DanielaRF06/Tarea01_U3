@@ -30,9 +30,12 @@ const urlBase = "/api/v1/";
 
 const user = require('./routers/user.routes')(wagner); //recibe el wagner para invocar
 const brand = require('./routers/brand.routes')(wagner);
+const product = require('./routers/product.routes')(wagner);
+
 
 
 
 app.use(urlBase+'usuarios',user);
 app.use(urlBase+'brands',brand);
+app.use(urlBase+'products',product);
 module.exports = app;
