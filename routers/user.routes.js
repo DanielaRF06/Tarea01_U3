@@ -13,17 +13,20 @@ module.exports = (wagner) => {
         router.get('/',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
                 userCtrl.findAll(req,res);
         });
+        router.get('/csvfile',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
+                userCtrl.csv2(req,res);
+        });
         router.get('/usr/:id',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
                 userCtrl.findId(req,res);
         });
-        router.get('/login/',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
+        router.get('/login/:email/:password',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
                 userCtrl.login(req,res);
         });
                 // recibe un path params
         router.delete('/:id',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
                 userCtrl.deleteById(req,res);
         });
-        router.put('/:id',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
+        router.put('/:id',(req,res)=>{ // tiene acceso a req y res,99 y enviar al controller de user
                 userCtrl.updateUser(req,res);
         });
         

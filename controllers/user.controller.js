@@ -1,6 +1,12 @@
 const http = require('http');
 const path = require('path');
 const status = require('http-status');
+const _config = require('../_config');
+const jwt = require('jsonwebtoken');
+
+const csvFilePath='./users.csv';
+const csv =require('csvtojson').Converter;
+const fs = require('fs');
 
 let _user;
 /**  POST */
@@ -36,7 +42,6 @@ const findAll = (req,res) =>{
                 res.json({msg:"Error!"});
         });
 }
-
 const findId = (req,res) =>{
     const {id} = req.params;
     _user.findOne({_id:id})
@@ -50,7 +55,6 @@ const findId = (req,res) =>{
         });
 }
 /** DELETE */
-
 const deleteById = (req,res) =>{
     //Destructor
     const {id}  = req.params;  /// es igual a const id  = req.params.id; 
@@ -68,7 +72,6 @@ const deleteById = (req,res) =>{
         });
 
 }
-
 const updateUser = (req,res) =>{
     const {id} = req.params;
 
@@ -82,23 +85,33 @@ const updateUser = (req,res) =>{
             res.json({msg:"Error",data:err});
         });        
 }
-
+/**LOGIN */
 const login = (req,res) =>{
-    
-    _user.find({email:req.body.email,password:req.body.password,})
-        .then((data)=>{
-            if(data.length == 0){
-                res.status(status.NO_CONTENT);
-                re.json({msg:"Acceso denegado"});
-            }else{
+    const { email,password} = req.params;
+    let query = { email:email,password:password};
+
+    _user.findOne(query,"-password")
+        .then((user)=>{
+            if(user){
+                const token = jwt.sign({email:email},_config.SECRETJWT);
                 res.status(status.OK);
-                res.json({msg:"Puedes acceder",data:data});
+                res.json({msg:"Acceso exitoso",data:{user:token,token:token}});
+            }else{
+                res.status(status.NOT_FOUND);
+                res.json({msg:"Error!! No se encontró",});
             }
         })
         .catch((err)=>{
-                res.status(status.BAD_REQUEST);
-                res.json({msg:"Error login!",err:err});
+                res.status(status.NOT_FOUND);
+                res.json({msg:"Error !! No se encontró",err:err});
         });
+}
+/** Insertar csv */
+var csvConv = new csv({})
+async function csv2 (req,res){
+    csvConv.on("end_parsed",function(jsonObj){
+        console.log(jsonObj); //here is your result json object
+    });
 }
 /** Exporta una funcion que recibe el modelo */
 module.exports = (User) =>{ 
@@ -109,6 +122,7 @@ module.exports = (User) =>{
         deleteById,
         updateUser,
         findId,
-        login
+        login,
+        csv2
     }); 
 }
