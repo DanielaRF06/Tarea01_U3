@@ -14,7 +14,7 @@ module.exports = (wagner) => {
                 userCtrl.findAll(req,res);
         });
         router.get('/csvfile',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
-                userCtrl.csv2(req,res);
+                userCtrl.insertarDatos(req,res);
         });
         router.get('/usr/:id',(req,res)=>{ // tiene acceso a req y res, y enviar al controller de user
                 userCtrl.findId(req,res);

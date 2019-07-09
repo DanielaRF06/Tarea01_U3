@@ -4,8 +4,7 @@ const status = require('http-status');
 const _config = require('../_config');
 const jwt = require('jsonwebtoken');
 
-const csvFilePath='./users.csv';
-const csv =require('csvtojson').Converter;
+const csv = require('csv-parser');
 const fs = require('fs');
 
 let _user;
@@ -107,11 +106,30 @@ const login = (req,res) =>{
         });
 }
 /** Insertar csv */
-var csvConv = new csv({})
-async function csv2 (req,res){
-    csvConv.on("end_parsed",function(jsonObj){
-        console.log(jsonObj); //here is your result json object
-    });
+const insertarDatos = (req,res)=>{
+    fs.createReadStream('./users.csv')
+        .pipe(csv())
+        .on('data', (row) => {
+            console.log(row);
+            _user.create(row)
+                .then((data) => {
+                    res.status(200);
+                    res.json({
+                        msg: "Inserciones exitosas"
+                    });
+                })
+                .catch((error) => {
+                    res.status(400);
+                    res.json({
+                        msg: "Error de inserciones",
+                        err: error
+                    });
+                });
+        })
+        .on('close', () => {
+            console.log('Fin csv');
+            
+        });
 }
 /** Exporta una funcion que recibe el modelo */
 module.exports = (User) =>{ 
@@ -123,6 +141,6 @@ module.exports = (User) =>{
         updateUser,
         findId,
         login,
-        csv2
+        insertarDatos
     }); 
 }
